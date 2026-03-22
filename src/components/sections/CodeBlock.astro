@@ -1,0 +1,119 @@
+---
+interface Props {
+  code: string;
+  language?: string;
+  title?: string;
+  highlight?: number[]; // line numbers to highlight
+}
+
+const { code, language = 'typescript', title, highlight = [] } = Astro.props;
+const lines = code.trim().split('\n');
+---
+
+<figure class="code-block" aria-label={title ? `Code: ${title}` : 'Code example'}>
+  <div class="code-block__header">
+    <div class="code-block__dots" aria-hidden="true">
+      <span></span><span></span><span></span>
+    </div>
+    {title && <span class="code-block__title">{title}</span>}
+    <span class="code-block__lang">{language.toUpperCase()}</span>
+  </div>
+
+  <div class="code-block__body">
+    <pre class="code-block__pre"><code class="code-block__code">{lines.map((line, i) => (
+      <div class:list={['code-block__line', { 'code-block__line--highlight': highlight.includes(i + 1) }]}>
+        <span class="code-block__line-num" aria-hidden="true">{String(i + 1).padStart(2, ' ')}</span>
+        <span class="code-block__line-content">{line || ' '}</span>
+      </div>
+    ))}</code></pre>
+  </div>
+</figure>
+
+<style>
+  .code-block {
+    background: var(--color-surface-lowest);
+    border: var(--border-thin);
+    margin: 0;
+    overflow: hidden;
+  }
+
+  .code-block__header {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    padding: var(--space-3) var(--space-4);
+    border-bottom: var(--border-thin);
+    background: var(--color-surface-low);
+  }
+
+  .code-block__dots {
+    display: flex;
+    gap: 5px;
+  }
+
+  .code-block__dots span {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--color-outline-variant);
+  }
+
+  .code-block__title {
+    font-family: var(--font-mono);
+    font-size: var(--text-label-sm);
+    color: var(--color-muted);
+    flex: 1;
+    letter-spacing: var(--tracking-wide);
+  }
+
+  .code-block__lang {
+    font-family: var(--font-mono);
+    font-size: var(--text-label-sm);
+    color: var(--color-primary);
+    letter-spacing: var(--tracking-wider);
+  }
+
+  .code-block__body {
+    overflow-x: auto;
+  }
+
+  .code-block__pre {
+    background: transparent;
+    border: none;
+    padding: var(--space-4) 0;
+    margin: 0;
+    font-size: var(--text-body-sm);
+    line-height: 1.7;
+    overflow: visible;
+  }
+
+  .code-block__code {
+    display: block;
+  }
+
+  .code-block__line {
+    display: grid;
+    grid-template-columns: 3ch 1fr;
+    gap: var(--space-4);
+    padding-inline: var(--space-4);
+    transition: background var(--duration-fast);
+  }
+
+  .code-block__line--highlight {
+    background: color-mix(in srgb, var(--color-primary) 8%, transparent);
+    border-left: 2px solid var(--color-primary);
+    padding-left: calc(var(--space-4) - 2px);
+  }
+
+  .code-block__line-num {
+    color: var(--color-outline-variant);
+    user-select: none;
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .code-block__line-content {
+    color: var(--color-on-bg);
+    white-space: pre;
+  }
+</style>

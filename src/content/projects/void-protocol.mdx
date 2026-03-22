@@ -1,0 +1,39 @@
+---
+title: "Void Protocol"
+description: "High-performance API gateway with intelligent circuit breaking, request coalescing, and adaptive rate limiting. Handles 2M+ requests/day on commodity hardware."
+tags: ["Go", "gRPC", "Redis", "Kubernetes", "Prometheus"]
+coverImage: "/images/projects/void-protocol.jpg"
+repoUrl: "https://github.com/terminal-prime/void-protocol"
+date: 2023-11-01
+featured: true
+role: "LEAD_ENGINEER"
+status: "LIVE_DEPLOYMENT"
+metrics:
+  rps: "23,000"
+  p99_latency: "8ms"
+  memory: "42MB"
+  cpu: "<2% idle"
+codeSnippet: |
+  // Adaptive circuit breaker
+  func (cb *CircuitBreaker) Call(fn func() error) error {
+    if cb.state == Open && time.Now().Before(cb.nextRetry) {
+      return ErrCircuitOpen
+    }
+    err := fn()
+    cb.record(err == nil)
+    return err
+  }
+codeLanguage: "go"
+---
+
+## Executive Summary
+
+Void Protocol is a zero-dependency API gateway written in Go. It was designed specifically for environments where every millisecond of latency and every megabyte of memory translates directly into infrastructure cost.
+
+## System Architecture
+
+The gateway uses a single-binary deployment model. All configuration is hot-reloaded via a gRPC control plane, meaning zero-downtime config updates. Prometheus metrics are exposed on a dedicated port for Grafana dashboards.
+
+## Implementation Detail
+
+The circuit breaker implements a sliding window algorithm (vs. the more common count-based approach) to provide accurate failure rate tracking under variable load. Combined with request coalescing (collapsing identical in-flight requests), the gateway reduces upstream pressure by ~60% under spike conditions.

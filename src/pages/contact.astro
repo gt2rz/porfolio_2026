@@ -1,0 +1,259 @@
+---
+import Layout from '../layouts/Layout.astro';
+import StatusDot from '../components/ui/StatusDot.astro';
+import ContactForm from '../components/islands/ContactForm.astro';
+import ScrollAnimations from '../components/islands/ScrollAnimations.astro';
+---
+
+<Layout
+  title="Contact: Establish Link — TERMINAL_PRIME"
+  description="Get in touch to discuss projects, collaborations, or opportunities."
+>
+  <div class="contact container section--lg">
+
+    <!-- Status header -->
+    <header class="contact__header gsap-reveal">
+      <div class="contact__status">
+        <StatusDot status="online" label="COMM_CHANNEL_STATUS: ACTIVE" pulse />
+      </div>
+      <h1 class="contact__title">
+        ESTABLISH<br /><span class="contact__title-accent">CONNECTION</span>
+      </h1>
+      <p class="contact__subtitle">
+        Open to new projects, technical consulting, and interesting problems.
+        Average response time: 24h.
+      </p>
+    </header>
+
+    <div class="contact__body">
+
+      <!-- Left: form -->
+      <div class="contact__form-wrap gsap-reveal">
+        <ContactForm />
+      </div>
+
+      <!-- Right: info -->
+      <aside class="contact__info gsap-reveal-left">
+
+        <!-- Repositories -->
+        <div class="contact__repos">
+          <span class="contact__section-label">SYSTEM_REPOSITORIES</span>
+          <div class="contact__repo-links">
+            <a
+              href="https://github.com/terminal-prime"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="contact__repo-link"
+            >
+              <span class="contact__repo-id">GH_ROOT/CORE_SYSTEM</span>
+              <span class="contact__repo-arrow">→</span>
+            </a>
+            <a
+              href="https://linkedin.com/in/terminal-prime"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="contact__repo-link"
+            >
+              <span class="contact__repo-id">LI_NODE/ARCHITECT_DB</span>
+              <span class="contact__repo-arrow">→</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- Quote -->
+        <blockquote class="contact__quote">
+          <p>
+            "The most profound technologies are those that disappear.
+            They weave themselves into the fabric of everyday life
+            until they are indistinguishable from it."
+          </p>
+          <footer class="contact__quote-attr">— WEISER_MARK</footer>
+        </blockquote>
+
+        <!-- System info -->
+        <div class="contact__sys-info">
+          <div class="contact__sys-row">
+            <span class="contact__sys-key">EMAIL</span>
+            <a href="mailto:hello@terminal-prime.dev" class="contact__sys-value contact__sys-link">
+              hello@terminal-prime.dev
+            </a>
+          </div>
+          <div class="contact__sys-row">
+            <span class="contact__sys-key">TIMEZONE</span>
+            <span class="contact__sys-value">UTC-6 (CDMX)</span>
+          </div>
+          <div class="contact__sys-row">
+            <span class="contact__sys-key">AVAILABILITY</span>
+            <span class="contact__sys-value contact__availability">OPEN_TO_OFFERS</span>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </div>
+
+  <ScrollAnimations />
+</Layout>
+
+<style>
+  .contact {
+    padding-top: calc(3.5rem + var(--space-16));
+  }
+
+  .contact__header {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    max-width: 700px;
+    margin-bottom: var(--space-16);
+  }
+
+  .contact__status {
+    margin-bottom: var(--space-2);
+  }
+
+  .contact__title {
+    font-family: var(--font-display);
+    font-size: var(--text-display-lg);
+    font-weight: 700;
+    letter-spacing: var(--tracking-tight);
+    color: var(--color-on-bg);
+    line-height: 1;
+  }
+
+  .contact__title-accent {
+    color: var(--color-primary);
+  }
+
+  .contact__subtitle {
+    font-family: var(--font-mono);
+    font-size: var(--text-body-md);
+    color: var(--color-muted);
+    line-height: 1.7;
+    max-width: 50ch;
+  }
+
+  .contact__body {
+    display: grid;
+    grid-template-columns: 1fr 380px;
+    gap: var(--space-16);
+    align-items: start;
+  }
+
+  .contact__section-label {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: var(--text-label-sm);
+    color: var(--color-primary);
+    letter-spacing: var(--tracking-wider);
+    margin-bottom: var(--space-4);
+  }
+
+  .contact__repo-links {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    background: var(--color-outline-variant);
+    border: 1px solid var(--color-outline-variant);
+    margin-bottom: var(--space-8);
+  }
+
+  .contact__repo-link {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--space-4) var(--space-4);
+    background: var(--color-surface-low);
+    font-family: var(--font-mono);
+    font-size: var(--text-body-sm);
+    color: var(--color-on-bg);
+    text-decoration: none;
+    transition: background var(--duration-fast), color var(--duration-fast);
+  }
+
+  .contact__repo-link:hover {
+    background: var(--color-surface-hi);
+    color: var(--color-primary);
+  }
+
+  .contact__repo-arrow {
+    transition: transform var(--duration-fast);
+  }
+
+  .contact__repo-link:hover .contact__repo-arrow {
+    transform: translateX(4px);
+  }
+
+  .contact__quote {
+    background: var(--color-surface-low);
+    border-left: 2px solid var(--color-primary);
+    padding: var(--space-6);
+    margin-bottom: var(--space-8);
+  }
+
+  .contact__quote p {
+    font-family: var(--font-mono);
+    font-size: var(--text-body-sm);
+    color: var(--color-muted);
+    line-height: 1.7;
+    margin-bottom: var(--space-3);
+  }
+
+  .contact__quote-attr {
+    font-family: var(--font-mono);
+    font-size: var(--text-label-sm);
+    color: var(--color-primary);
+    letter-spacing: var(--tracking-wide);
+  }
+
+  .contact__sys-info {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    background: var(--color-outline-variant);
+    border: 1px solid var(--color-outline-variant);
+  }
+
+  .contact__sys-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--space-3) var(--space-4);
+    background: var(--color-surface-low);
+    gap: var(--space-4);
+  }
+
+  .contact__sys-key {
+    font-family: var(--font-mono);
+    font-size: var(--text-label-sm);
+    color: var(--color-muted);
+    letter-spacing: var(--tracking-wide);
+    white-space: nowrap;
+  }
+
+  .contact__sys-value {
+    font-family: var(--font-mono);
+    font-size: var(--text-body-sm);
+    color: var(--color-on-bg);
+    text-align: right;
+  }
+
+  .contact__sys-link {
+    color: var(--color-primary);
+    text-decoration: none;
+  }
+
+  .contact__sys-link:hover {
+    text-decoration: underline;
+  }
+
+  .contact__availability {
+    color: var(--color-primary);
+  }
+
+  @media (max-width: 960px) {
+    .contact__body {
+      grid-template-columns: 1fr;
+      gap: var(--space-12);
+    }
+  }
+</style>

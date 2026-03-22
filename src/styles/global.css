@@ -1,0 +1,188 @@
+/* ============================================================
+   GLOBAL — Reset, base styles, atmospheric effects
+   ============================================================ */
+
+@import './tokens.css';
+@import './typography.css';
+@import './animations.css';
+
+/* ── Reset ── */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  scroll-behavior: auto; /* Lenis handles smooth scroll */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  background-color: var(--color-bg);
+  color: var(--color-on-bg);
+  font-family: var(--font-mono);
+  font-size: var(--text-body-md);
+  line-height: 1.6;
+  min-height: 100svh;
+  overflow-x: hidden;
+  position: relative;
+}
+
+/* ── Dot grid background texture ── */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: radial-gradient(
+    circle,
+    color-mix(in srgb, var(--color-outline-variant) 35%, transparent) 1px,
+    transparent 1px
+  );
+  background-size: 24px 24px;
+  pointer-events: none;
+  z-index: var(--z-base);
+}
+
+/* ── Scanline overlay (CRT effect) ── */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    color-mix(in srgb, #000 8%, transparent) 2px,
+    color-mix(in srgb, #000 8%, transparent) 4px
+  );
+  pointer-events: none;
+  z-index: var(--z-top);
+  mix-blend-mode: multiply;
+}
+
+/* ── Grain overlay (SVG noise filter) ── */
+.grain-overlay {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: calc(var(--z-top) - 1);
+  opacity: 0.04;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 256px 256px;
+}
+
+/* ── Container utility ── */
+.container {
+  width: 100%;
+  max-width: var(--max-width);
+  margin-inline: auto;
+  padding-inline: var(--container-px);
+}
+
+/* ── Section spacing ── */
+.section {
+  padding-block: var(--space-24);
+}
+
+.section--lg {
+  padding-block: var(--space-32);
+}
+
+/* ── Links ── */
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+a:focus-visible {
+  outline: 1px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+/* ── Images ── */
+img, video {
+  display: block;
+  max-width: 100%;
+}
+
+/* ── Text selection ── */
+::selection {
+  background-color: var(--color-primary);
+  color: var(--color-on-primary);
+}
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-surface-low);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-outline-variant);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-primary);
+}
+
+/* ── Code elements ── */
+code, pre {
+  font-family: var(--font-mono);
+  background: var(--color-surface-lowest);
+  border: var(--border-thin);
+}
+
+code {
+  padding: 0.1em 0.3em;
+  font-size: 0.9em;
+}
+
+pre {
+  padding: var(--space-4);
+  overflow-x: auto;
+  line-height: 1.7;
+}
+
+/* ── Horizontal rule ── */
+hr {
+  border: none;
+  border-top: var(--border-thin);
+}
+
+/* ── Focus ring ── */
+:focus-visible {
+  outline: 1px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+/* ── Lenis smooth scroll ── */
+html.lenis, html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+/* ── Responsive breakpoints ── */
+@media (max-width: 768px) {
+  :root {
+    --container-px: 1rem;
+  }
+}

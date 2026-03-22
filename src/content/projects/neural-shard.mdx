@@ -1,0 +1,44 @@
+---
+title: "Neural Shard OS"
+description: "Real-time ML inference kernel built on WebAssembly. Runs quantized transformer models directly in the browser with SIMD acceleration — no server round-trip."
+tags: ["Rust", "WebAssembly", "SIMD", "TypeScript", "Kubernetes"]
+coverImage: "/images/projects/neural-shard.jpg"
+liveUrl: "https://neural-shard.dev"
+repoUrl: "https://github.com/terminal-prime/neural-shard"
+date: 2024-01-20
+featured: true
+role: "CORE_ARCHITECT"
+status: "IN_DEVELOPMENT"
+metrics:
+  inference: "12ms avg"
+  model_size: "45MB (Q4)"
+  wasm_bundle: "1.2MB"
+  accuracy: "94.3% vs FP32"
+codeSnippet: |
+  // SIMD-accelerated dot product (Rust)
+  #[target_feature(enable = "simd128")]
+  pub unsafe fn dot_product(a: &[f32], b: &[f32]) -> f32 {
+    let mut sum = f32x4_splat(0.0);
+    for (chunk_a, chunk_b) in a.chunks_exact(4).zip(b.chunks_exact(4)) {
+      sum = f32x4_add(sum, f32x4_mul(
+        v128_load(chunk_a.as_ptr() as *const v128),
+        v128_load(chunk_b.as_ptr() as *const v128),
+      ));
+    }
+    f32x4_extract_lane::<0>(sum) + f32x4_extract_lane::<1>(sum)
+      + f32x4_extract_lane::<2>(sum) + f32x4_extract_lane::<3>(sum)
+  }
+codeLanguage: "rust"
+---
+
+## Executive Summary
+
+Neural Shard OS is an experiment in pushing the limits of browser-native machine learning. By compiling Rust to WebAssembly with SIMD128 intrinsics enabled, inference latency on quantized models drops to 12ms average — competitive with dedicated inference APIs.
+
+## System Architecture
+
+The system comprises three layers: a **Rust core** (model loading, tensor ops, SIMD kernels), a **WASM boundary** (JS/WASM bridge with SharedArrayBuffer for zero-copy transfers), and a **TypeScript orchestration layer** (tokenizer, request batching, UI).
+
+## Implementation Detail
+
+The primary optimization breakthrough was rewriting the attention mechanism in pure SIMD128. The standard dot-product loop, when restructured to process 4 floats simultaneously, yields a 3.8× speedup on M2 and a 2.4× speedup on V8's WASM engine — without any GPU dependency.

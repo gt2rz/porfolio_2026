@@ -1,0 +1,61 @@
+---
+// Vanta.js NET effect — client:load island
+// Renders an interactive network of nodes that react to mouse
+---
+
+<div id="vanta-bg" aria-hidden="true"></div>
+
+<script>
+  import * as THREE from 'three';
+
+  let vantaEffect: ReturnType<typeof import('vanta/dist/vanta.net.min').default> | null = null;
+
+  async function initVanta() {
+    // Destroy previous instance on View Transition
+    if (vantaEffect) {
+      vantaEffect.destroy();
+      vantaEffect = null;
+    }
+
+    const el = document.getElementById('vanta-bg');
+    if (!el) return;
+
+    const VANTA = await import('vanta/dist/vanta.net.min');
+
+    vantaEffect = VANTA.default({
+      el,
+      THREE,
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      // Cyber green palette
+      color: 0x00e639,
+      backgroundColor: 0x050505,
+      points: 9,
+      maxDistance: 22,
+      spacing: 18,
+      // Performance
+      scale: 1.0,
+      scaleMobile: 1.0,
+    });
+  }
+
+  // Cleanup on View Transition out
+  document.addEventListener('astro:before-swap', () => {
+    if (vantaEffect) {
+      vantaEffect.destroy();
+      vantaEffect = null;
+    }
+  });
+
+  document.addEventListener('astro:page-load', initVanta);
+</script>
+
+<style>
+  #vanta-bg {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    opacity: 0.45;
+  }
+</style>

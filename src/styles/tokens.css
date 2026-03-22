@@ -1,0 +1,84 @@
+/* ============================================================
+   DESIGN SYSTEM TOKENS — The Engineering Editorial / Brutalist Lab
+   ============================================================ */
+
+:root {
+  /* ── Colors ── */
+  --color-bg:                  #050505;
+  --color-surface-lowest:      #000000;
+  --color-surface-low:         #131313;
+  --color-surface:             #1a1919;
+  --color-surface-hi:          #202020;
+  --color-surface-highest:     #262626;
+
+  --color-primary:             #00e639;
+  --color-primary-dim:         #00d635;
+  --color-on-primary:          #004c0c;
+
+  --color-on-bg:               #e7e5e4;
+  --color-muted:               #acabaa;
+  --color-outline:             #767575;
+  --color-outline-variant:     #484848;
+
+  --color-error:               #ed7f64;
+  --color-error-container:     #7e2b17;
+
+  --color-secondary:           #9d9e9e;
+  --color-tertiary:            #fcf9f8;
+
+  /* ── Typography ── */
+  --font-mono:    'Geist Mono', 'JetBrains Mono', 'Fira Code', monospace;
+  --font-display: 'Space Grotesk', system-ui, sans-serif;
+
+  /* Display scale — Space Grotesk */
+  --text-display-lg:  clamp(2.5rem, 6vw, 3.5rem);
+  --text-display-md:  clamp(2rem, 4vw, 2.75rem);
+  --text-display-sm:  clamp(1.5rem, 3vw, 2rem);
+
+  /* Body/label scale — Geist Mono */
+  --text-body-lg:   1rem;
+  --text-body-md:   0.875rem;
+  --text-body-sm:   0.75rem;
+  --text-label-sm:  0.6875rem;   /* All-caps metadata */
+
+  --tracking-tight:  -0.05em;
+  --tracking-normal: 0em;
+  --tracking-wide:   0.1em;
+  --tracking-wider:  0.15em;
+
+  /* ── Spacing ── */
+  --space-1:   0.25rem;
+  --space-2:   0.5rem;
+  --space-3:   0.75rem;
+  --space-4:   1rem;
+  --space-6:   1.5rem;
+  --space-8:   2rem;
+  --space-12:  3rem;
+  --space-16:  4rem;
+  --space-24:  6rem;
+  --space-32:  8rem;
+
+  /* ── Layout ── */
+  --max-width:      1280px;
+  --container-px:   clamp(1rem, 5vw, 3rem);
+
+  /* ── Borders & Shape ── */
+  --radius:         0px;   /* Brutalist — zero radius everywhere */
+  --border-thin:    1px solid var(--color-outline-variant);
+  --border-primary: 1px solid var(--color-primary);
+
+  /* ── Animation ── */
+  --ease-out-expo:  cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out:    cubic-bezier(0.65, 0, 0.35, 1);
+  --duration-fast:  150ms;
+  --duration-base:  300ms;
+  --duration-slow:  600ms;
+
+  /* ── Z-index scale ── */
+  --z-base:    0;
+  --z-above:   10;
+  --z-overlay: 100;
+  --z-nav:     200;
+  --z-modal:   300;
+  --z-top:     999;
+}

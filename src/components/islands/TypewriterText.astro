@@ -1,0 +1,94 @@
+---
+interface Props {
+  texts: string[];       // Array of strings to cycle through
+  prefix?: string;       // Static prefix shown before typed text
+  loop?: boolean;
+  speed?: number;        // Characters per second
+}
+
+const {
+  texts,
+  prefix = '',
+  loop = true,
+  speed = 30,
+} = Astro.props;
+---
+
+<span class="typewriter-wrap" aria-label={texts.join(', ')}>
+  {prefix && <span class="typewriter-prefix">{prefix}</span>}
+  <span id="typewriter-target" class="typewriter-text cursor-blink" aria-live="polite"></span>
+</span>
+
+<script define:vars={{ texts, loop, speed }}>
+  import { gsap, TextPlugin } from '../../lib/gsap';
+
+  function initTypewriter() {
+    const el = document.getElementById('typewriter-target');
+    if (!el) return;
+
+    const duration = (text: string) => text.length / speed;
+    let currentIndex = 0;
+    let killed = false;
+
+    function typeNext() {
+      if (killed) return;
+      const text = texts[currentIndex];
+      const tl = gsap.timeline({
+        onComplete: () => {
+          if (killed) return;
+          // Pause then delete
+          gsap.delayedCall(2.5, () => {
+            if (killed) return;
+            gsap.to(el, {
+              duration: duration(text) * 0.4,
+              text: { value: '', delimiter: '' },
+              ease: 'none',
+              onComplete: () => {
+                if (killed) return;
+                currentIndex = loop
+                  ? (currentIndex + 1) % texts.length
+                  : Math.min(currentIndex + 1, texts.length - 1);
+                typeNext();
+              },
+            });
+          });
+        },
+      });
+
+      tl.to(el, {
+        duration: duration(text),
+        text: { value: text, delimiter: '' },
+        ease: 'none',
+      });
+    }
+
+    typeNext();
+
+    // Cleanup on View Transition
+    document.addEventListener('astro:before-swap', () => {
+      killed = true;
+      gsap.killTweensOf(el);
+    }, { once: true });
+  }
+
+  document.addEventListener('astro:page-load', initTypewriter);
+</script>
+
+<style>
+  .typewriter-wrap {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.25em;
+    font-family: var(--font-mono);
+  }
+
+  .typewriter-prefix {
+    color: var(--color-primary);
+    white-space: nowrap;
+  }
+
+  .typewriter-text {
+    color: var(--color-on-bg);
+    min-width: 1ch;
+  }
+</style>

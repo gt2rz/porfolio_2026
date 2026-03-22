@@ -1,0 +1,245 @@
+---
+import Layout from '../layouts/Layout.astro';
+import ProgressBar from '../components/ui/ProgressBar.astro';
+import Badge from '../components/ui/Badge.astro';
+import ScrollAnimations from '../components/islands/ScrollAnimations.astro';
+
+const skills = {
+  frontend: [
+    { name: 'TypeScript', value: 95 },
+    { name: 'Astro',      value: 92 },
+    { name: 'React',      value: 88 },
+    { name: 'GSAP',       value: 82 },
+    { name: 'CSS / Tailwind', value: 90 },
+  ],
+  backend: [
+    { name: 'Go',      value: 78 },
+    { name: 'Rust',    value: 72 },
+    { name: 'Node.js', value: 85 },
+    { name: 'gRPC',    value: 75 },
+    { name: 'Redis',   value: 80 },
+  ],
+  infrastructure: [
+    { name: 'Kubernetes', value: 70 },
+    { name: 'Docker',     value: 85 },
+    { name: 'Vercel',     value: 92 },
+    { name: 'GitHub Actions', value: 88 },
+    { name: 'Cloudflare Workers', value: 75 },
+  ],
+};
+
+const tools = [
+  { name: 'Neovim', category: 'EDITOR' },
+  { name: 'Wezterm', category: 'TERMINAL' },
+  { name: 'Figma', category: 'DESIGN' },
+  { name: 'Stitch', category: 'DESIGN' },
+  { name: 'Linear', category: 'PROJECT_MGMT' },
+  { name: 'Zed', category: 'EDITOR' },
+  { name: 'TablePlus', category: 'DATABASE' },
+  { name: 'Insomnia', category: 'API_CLIENT' },
+  { name: 'Raycast', category: 'LAUNCHER' },
+  { name: 'CleanMyMac', category: 'SYSTEM' },
+];
+---
+
+<Layout
+  title="Stack: Tech Architecture — TERMINAL_PRIME"
+  description="A curated selection of high-performance frameworks, libraries, and protocols utilized to build scalable, type-safe digital environments."
+>
+  <div class="stack container section--lg">
+
+    <!-- Header -->
+    <header class="stack__header gsap-reveal">
+      <div class="stack__hero-label">
+        <span class="stack__prefix" aria-hidden="true">~/</span>CORE_INFRASTRUCTURE
+      </div>
+      <h1 class="stack__title">Tech<br /><span class="stack__title-accent">Stack</span></h1>
+      <p class="stack__description">
+        A curated selection of high-performance frameworks, libraries, and protocols
+        utilized to build scalable, type-safe digital environments.
+      </p>
+    </header>
+
+    <!-- Skills grid -->
+    <div class="stack__sections">
+      {Object.entries(skills).map(([category, items]) => (
+        <section class="stack__category gsap-reveal" aria-labelledby={`stack-${category}`}>
+          <h2 id={`stack-${category}`} class="stack__category-title">
+            <span class="stack__category-prefix" aria-hidden="true">## </span>
+            {category.toUpperCase()}
+          </h2>
+          <div class="stack__bars">
+            {items.map(skill => (
+              <ProgressBar label={skill.name} value={skill.value} />
+            ))}
+          </div>
+        </section>
+      ))}
+    </div>
+
+    <hr class="stack__divider" />
+
+    <!-- Environment tools -->
+    <section class="stack__tools gsap-reveal" aria-labelledby="stack-tools-title">
+      <h2 id="stack-tools-title" class="stack__category-title">
+        <span class="stack__category-prefix" aria-hidden="true">## </span>
+        ENVIRONMENT
+      </h2>
+      <div class="stack__tools-grid gsap-stagger">
+        {tools.map(tool => (
+          <div class="stack__tool">
+            <span class="stack__tool-name">{tool.name}</span>
+            <Badge variant="tech">{tool.category}</Badge>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <hr class="stack__divider" />
+
+    <!-- Philosophy note -->
+    <section class="stack__philosophy gsap-reveal">
+      <span class="stack__philosophy-label">ARCHITECTURE_NOTE</span>
+      <blockquote class="stack__philosophy-text">
+        Every tool in this stack was chosen with a single criterion: does it
+        reduce the distance between intention and execution? If a framework
+        creates more abstraction than it eliminates, it does not belong here.
+      </blockquote>
+    </section>
+  </div>
+
+  <ScrollAnimations />
+</Layout>
+
+<style>
+  .stack {
+    padding-top: calc(3.5rem + var(--space-16));
+  }
+
+  .stack__header {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    max-width: 700px;
+    margin-bottom: var(--space-16);
+  }
+
+  .stack__hero-label {
+    font-family: var(--font-mono);
+    font-size: var(--text-label-sm);
+    color: var(--color-primary);
+    letter-spacing: var(--tracking-wider);
+  }
+
+  .stack__prefix {
+    color: var(--color-primary);
+  }
+
+  .stack__title {
+    font-family: var(--font-display);
+    font-size: var(--text-display-lg);
+    font-weight: 700;
+    letter-spacing: var(--tracking-tight);
+    color: var(--color-on-bg);
+    line-height: 1;
+  }
+
+  .stack__title-accent {
+    color: var(--color-primary);
+  }
+
+  .stack__description {
+    font-family: var(--font-mono);
+    font-size: var(--text-body-md);
+    color: var(--color-muted);
+    line-height: 1.7;
+    max-width: 55ch;
+  }
+
+  .stack__sections {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-12);
+    margin-bottom: var(--space-16);
+  }
+
+  .stack__category-title {
+    font-family: var(--font-mono);
+    font-size: var(--text-body-sm);
+    font-weight: 400;
+    color: var(--color-muted);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    margin-bottom: var(--space-6);
+  }
+
+  .stack__category-prefix {
+    color: var(--color-primary);
+  }
+
+  .stack__bars {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-5);
+  }
+
+  .stack__divider {
+    margin-block: var(--space-12);
+  }
+
+  .stack__tools-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1px;
+    background: var(--color-outline-variant);
+    border: 1px solid var(--color-outline-variant);
+    margin-top: var(--space-6);
+  }
+
+  .stack__tool {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--space-4) var(--space-4);
+    background: var(--color-surface-low);
+    transition: background var(--duration-fast);
+  }
+
+  .stack__tool:hover {
+    background: var(--color-surface-hi);
+  }
+
+  .stack__tool-name {
+    font-family: var(--font-mono);
+    font-size: var(--text-body-sm);
+    color: var(--color-on-bg);
+  }
+
+  .stack__philosophy {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    max-width: 700px;
+    margin-bottom: var(--space-16);
+  }
+
+  .stack__philosophy-label {
+    font-family: var(--font-mono);
+    font-size: var(--text-label-sm);
+    color: var(--color-primary);
+    letter-spacing: var(--tracking-wider);
+  }
+
+  .stack__philosophy-text {
+    font-family: var(--font-mono);
+    font-size: var(--text-body-md);
+    color: var(--color-muted);
+    line-height: 1.7;
+    border-left: 2px solid var(--color-outline-variant);
+    padding-left: var(--space-6);
+  }
+
+  @media (max-width: 900px) {
+    .stack__sections { grid-template-columns: 1fr; }
+  }
+</style>

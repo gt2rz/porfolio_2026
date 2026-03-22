@@ -1,0 +1,43 @@
+---
+title: "Oblivion Mesh"
+description: "Distributed content delivery network built on a peer-to-peer mesh topology. Achieves sub-5ms routing latency across 40+ edge nodes with zero single point of failure."
+tags: ["TypeScript", "Astro", "Tailwind", "WebRTC", "Redis"]
+coverImage: "/images/projects/oblivion-mesh.jpg"
+liveUrl: "https://oblivion-mesh.dev"
+repoUrl: "https://github.com/terminal-prime/oblivion-mesh"
+date: 2024-03-15
+featured: true
+role: "CORE_ARCHITECT"
+status: "LIVE_DEPLOYMENT"
+metrics:
+  latency: "<5ms"
+  uptime: "99.97%"
+  nodes: "42"
+  throughput: "12GB/s"
+codeSnippet: |
+  // Mesh topology resolver — Raft consensus
+  async function electLeader(nodes: Node[]): Promise<Node> {
+    const votes = await Promise.race(
+      nodes.map(n => n.requestVote(term))
+    );
+    return votes.find(v => v.granted) ?? nodes[0];
+  }
+codeLanguage: "typescript"
+---
+
+## Executive Summary
+
+Oblivion Mesh is a production-grade distributed CDN built to solve the latency cliff in traditional hub-and-spoke delivery architectures. By implementing a **Raft consensus algorithm** over WebRTC data channels, each edge node can autonomously elect a leader and re-route traffic during failure scenarios.
+
+## System Architecture
+
+The system operates on three tiers: **Origin** (immutable source of truth), **Relay** (consensus participants), and **Edge** (client-facing cache nodes). Each tier communicates over encrypted gRPC channels with mutual TLS.
+
+## Implementation Detail
+
+The core routing algorithm uses consistent hashing with virtual nodes to distribute load. When a node fails, the remaining nodes trigger a Raft election within 150ms, ensuring zero noticeable downtime for end users.
+
+Key engineering decisions:
+- **WebRTC over gRPC** for browser-native peer connections
+- **Redis Streams** for audit log replication
+- **Astro** for the monitoring dashboard (zero-JS by default)

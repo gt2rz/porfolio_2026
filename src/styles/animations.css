@@ -1,0 +1,87 @@
+/* ============================================================
+   ANIMATIONS — Keyframes and reusable motion utilities
+   ============================================================ */
+
+/* ── Scanline CRT effect ── */
+@keyframes scanline-move {
+  0%   { transform: translateY(-100%); }
+  100% { transform: translateY(100vh); }
+}
+
+/* ── Fade in up (GSAP also uses this) ── */
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ── Fade in ── */
+@keyframes fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* ── Blink cursor ── */
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0; }
+}
+
+/* ── Status pulse ── */
+@keyframes pulse-dot {
+  0%, 100% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--color-primary) 40%, transparent); }
+  50%       { box-shadow: 0 0 0 6px transparent; }
+}
+
+/* ── Button mechanical press ── */
+@keyframes btn-press {
+  0%   { transform: translate(0, 0); }
+  50%  { transform: translate(2px, 2px); }
+  100% { transform: translate(0, 0); }
+}
+
+/* ── Utility classes ── */
+.animate-fade-in {
+  animation: fade-in var(--duration-slow) var(--ease-out-expo) both;
+}
+
+.animate-fade-in-up {
+  animation: fade-in-up var(--duration-slow) var(--ease-out-expo) both;
+}
+
+.cursor-blink::after {
+  content: '_';
+  animation: blink 1s step-end infinite;
+  color: var(--color-primary);
+}
+
+/* ── GSAP reveal class — elements start hidden ── */
+.gsap-reveal {
+  opacity: 0;
+  transform: translateY(32px);
+  will-change: opacity, transform;
+}
+
+.gsap-reveal-left {
+  opacity: 0;
+  transform: translateX(-32px);
+  will-change: opacity, transform;
+}
+
+.gsap-stagger > * {
+  opacity: 0;
+  transform: translateY(24px);
+  will-change: opacity, transform;
+}
+
+/* ── View Transition helpers ── */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 400ms;
+  animation-timing-function: var(--ease-out-expo);
+}

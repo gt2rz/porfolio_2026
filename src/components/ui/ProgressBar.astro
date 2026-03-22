@@ -1,0 +1,93 @@
+---
+interface Props {
+  label: string;
+  value: number; // 0–100
+  showValue?: boolean;
+}
+
+const { label, value, showValue = true } = Astro.props;
+const clamped = Math.min(100, Math.max(0, value));
+---
+
+<div class="progress-bar" role="group" aria-label={`${label}: ${clamped}%`}>
+  <div class="progress-bar__header">
+    <span class="progress-bar__label">{label}</span>
+    {showValue && (
+      <span class="progress-bar__value"
+        data-value={clamped}
+        aria-label={`${clamped} percent`}
+      >
+        {clamped}<span class="progress-bar__unit">%</span>
+      </span>
+    )}
+  </div>
+  <div class="progress-bar__track" role="progressbar" aria-valuenow={clamped} aria-valuemin={0} aria-valuemax={100}>
+    <div
+      class="progress-bar__fill"
+      style={`--fill-width: ${clamped}%`}
+    ></div>
+  </div>
+</div>
+
+<style>
+  .progress-bar {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+
+  .progress-bar__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+  }
+
+  .progress-bar__label {
+    font-family: var(--font-mono);
+    font-size: var(--text-body-sm);
+    color: var(--color-on-bg);
+    letter-spacing: var(--tracking-wide);
+  }
+
+  .progress-bar__value {
+    font-family: var(--font-mono);
+    font-size: var(--text-body-sm);
+    color: var(--color-primary);
+    font-weight: 600;
+  }
+
+  .progress-bar__unit {
+    font-size: var(--text-label-sm);
+    color: var(--color-muted);
+    margin-left: 1px;
+  }
+
+  .progress-bar__track {
+    height: 2px;
+    background: var(--color-outline-variant);
+    position: relative;
+    overflow: visible;
+  }
+
+  .progress-bar__fill {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: var(--fill-width, 0%);
+    background: var(--color-primary);
+    box-shadow: 0 0 8px color-mix(in srgb, var(--color-primary) 60%, transparent);
+    transition: width 1.2s var(--ease-out-expo);
+  }
+
+  /* Tick mark at the end */
+  .progress-bar__fill::after {
+    content: '';
+    position: absolute;
+    right: -1px;
+    top: -3px;
+    width: 1px;
+    height: 8px;
+    background: var(--color-primary);
+  }
+</style>

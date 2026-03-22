@@ -1,0 +1,175 @@
+---
+import Badge from '../ui/Badge.astro';
+import StatusDot from '../ui/StatusDot.astro';
+
+interface Props {
+  slug: string;
+  title: string;
+  description: string;
+  tags: string[];
+  role: string;
+  status: 'LIVE_DEPLOYMENT' | 'IN_DEVELOPMENT' | 'ARCHIVED';
+  index?: number;
+}
+
+const { slug, title, description, tags, role, status, index = 0 } = Astro.props;
+
+const statusColor = {
+  LIVE_DEPLOYMENT: 'online',
+  IN_DEVELOPMENT: 'idle',
+  ARCHIVED: 'error',
+} as const;
+---
+
+<article class="project-card gsap-reveal" style={`--card-index: ${index}`}>
+  <a href={`/projects/${slug}`} class="project-card__link" aria-label={`View ${title}`}>
+
+    <div class="project-card__header">
+      <span class="project-card__index">PROJECT_{String(index + 1).padStart(2, '0')}</span>
+      <StatusDot status={statusColor[status]} />
+    </div>
+
+    <h2
+      class="project-card__title"
+      transition:name={`project-title-${slug}`}
+    >
+      {title}
+    </h2>
+
+    <p class="project-card__description">{description}</p>
+
+    <div class="project-card__footer">
+      <div class="project-card__tags">
+        {tags.slice(0, 4).map(tag => (
+          <Badge variant="tech">{tag}</Badge>
+        ))}
+      </div>
+      <span class="project-card__role">{role}</span>
+    </div>
+
+    <div class="project-card__cta" aria-hidden="true">
+      <span>VIEW_DETAILS</span>
+      <span class="project-card__arrow">→</span>
+    </div>
+  </a>
+</article>
+
+<style>
+  .project-card {
+    background: var(--color-surface-low);
+    border: var(--border-thin);
+    transition: background var(--duration-fast), border-color var(--duration-fast);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .project-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: transparent;
+    transition: background var(--duration-base);
+  }
+
+  .project-card:hover {
+    background: var(--color-surface-hi);
+    border-color: color-mix(in srgb, var(--color-primary) 40%, transparent);
+  }
+
+  .project-card:hover::before {
+    background: var(--color-primary);
+  }
+
+  .project-card__link {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    padding: var(--space-8);
+    height: 100%;
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .project-card__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .project-card__index {
+    font-family: var(--font-mono);
+    font-size: var(--text-label-sm);
+    color: var(--color-muted);
+    letter-spacing: var(--tracking-wider);
+  }
+
+  .project-card__title {
+    font-family: var(--font-display);
+    font-size: var(--text-display-sm);
+    font-weight: 700;
+    letter-spacing: var(--tracking-tight);
+    color: var(--color-on-bg);
+    line-height: 1.1;
+    transition: color var(--duration-fast);
+  }
+
+  .project-card:hover .project-card__title {
+    color: var(--color-primary);
+  }
+
+  .project-card__description {
+    font-family: var(--font-mono);
+    font-size: var(--text-body-sm);
+    color: var(--color-muted);
+    line-height: 1.6;
+    flex: 1;
+  }
+
+  .project-card__footer {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+
+  .project-card__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+  }
+
+  .project-card__role {
+    font-family: var(--font-mono);
+    font-size: var(--text-label-sm);
+    color: var(--color-primary);
+    letter-spacing: var(--tracking-wide);
+  }
+
+  .project-card__cta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: var(--space-2);
+    font-family: var(--font-mono);
+    font-size: var(--text-label-sm);
+    color: var(--color-muted);
+    letter-spacing: var(--tracking-wide);
+    border-top: var(--border-thin);
+    padding-top: var(--space-4);
+    transition: color var(--duration-fast);
+  }
+
+  .project-card:hover .project-card__cta {
+    color: var(--color-primary);
+  }
+
+  .project-card__arrow {
+    transition: transform var(--duration-fast);
+  }
+
+  .project-card:hover .project-card__arrow {
+    transform: translateX(4px);
+  }
+</style>

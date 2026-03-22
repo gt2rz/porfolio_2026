@@ -1,0 +1,133 @@
+---
+import type { ButtonVariant } from '../../lib/types';
+
+interface Props {
+  variant?: ButtonVariant;
+  href?: string;
+  type?: 'button' | 'submit' | 'reset';
+  class?: string;
+  disabled?: boolean;
+  external?: boolean;
+}
+
+const {
+  variant = 'primary',
+  href,
+  type = 'button',
+  class: className = '',
+  disabled = false,
+  external = false,
+} = Astro.props;
+
+const Tag = href ? 'a' : 'button';
+const linkProps = href ? {
+  href,
+  target: external ? '_blank' : undefined,
+  rel: external ? 'noopener noreferrer' : undefined,
+} : {};
+---
+
+{href ? (
+  <a
+    href={href}
+    target={external ? '_blank' : undefined}
+    rel={external ? 'noopener noreferrer' : undefined}
+    class:list={['btn', `btn--${variant}`, className]}
+    aria-disabled={disabled}
+  >
+    <slot />
+  </a>
+) : (
+  <button
+    type={type}
+    disabled={disabled}
+    class:list={['btn', `btn--${variant}`, className]}
+  >
+    <slot />
+  </button>
+)}
+
+<style>
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-family: var(--font-display);
+    font-size: var(--text-label-sm);
+    font-weight: 600;
+    letter-spacing: var(--tracking-wider);
+    text-transform: uppercase;
+    cursor: pointer;
+    border: none;
+    transition:
+      transform var(--duration-fast),
+      color var(--duration-fast),
+      background var(--duration-fast);
+    position: relative;
+    text-decoration: none;
+  }
+
+  .btn:disabled,
+  .btn[aria-disabled='true'] {
+    opacity: 0.4;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+
+  /* Primary — Filled Cyber Green */
+  .btn--primary {
+    background: var(--color-primary);
+    color: var(--color-on-primary);
+    padding: var(--space-3) var(--space-6);
+  }
+
+  .btn--primary::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border: 1px solid var(--color-primary);
+    transform: translate(3px, 3px);
+    transition: transform var(--duration-fast);
+    pointer-events: none;
+  }
+
+  .btn--primary:hover {
+    transform: translate(-2px, -2px);
+  }
+
+  .btn--primary:hover::after {
+    transform: translate(5px, 5px);
+  }
+
+  .btn--primary:active {
+    transform: translate(1px, 1px);
+  }
+
+  /* Secondary — Outlined */
+  .btn--secondary {
+    background: transparent;
+    color: var(--color-primary);
+    padding: var(--space-3) var(--space-6);
+    border: 1px solid var(--color-primary);
+  }
+
+  .btn--secondary:hover {
+    background: color-mix(in srgb, var(--color-primary) 10%, transparent);
+  }
+
+  /* Tertiary — Text only with > prefix */
+  .btn--tertiary {
+    background: transparent;
+    color: var(--color-primary);
+    padding: var(--space-2) 0;
+  }
+
+  .btn--tertiary::before {
+    content: '> ';
+    font-family: var(--font-mono);
+  }
+
+  .btn--tertiary:hover {
+    color: var(--color-primary-dim);
+  }
+</style>

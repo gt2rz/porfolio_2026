@@ -1,0 +1,47 @@
+---
+import Layout from './Layout.astro';
+
+interface Props {
+  title?: string;
+  description?: string;
+  ogImage?: string;
+}
+
+const { title, description, ogImage } = Astro.props;
+---
+
+<Layout title={title} description={description} ogImage={ogImage}>
+  <div class="project-layout">
+    <!-- Back link -->
+    <div class="project-layout__back container">
+      <a href="/#projects" class="project-layout__back-link">
+        <span aria-hidden="true">←</span> BACK_TO_ARCHIVE
+      </a>
+    </div>
+
+    <slot />
+  </div>
+</Layout>
+
+<style>
+  .project-layout__back {
+    padding-top: calc(3.5rem + var(--space-6));
+    padding-bottom: 0;
+  }
+
+  .project-layout__back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-family: var(--font-mono);
+    font-size: var(--text-label-sm);
+    color: var(--color-muted);
+    letter-spacing: var(--tracking-wide);
+    text-decoration: none;
+    transition: color var(--duration-fast);
+  }
+
+  .project-layout__back-link:hover {
+    color: var(--color-primary);
+  }
+</style>

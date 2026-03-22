@@ -1,0 +1,279 @@
+---
+import Layout from '../layouts/Layout.astro';
+import ScrollAnimations from '../components/islands/ScrollAnimations.astro';
+
+const principles = [
+  {
+    id: 'PURPOSE',
+    version: 'v1.0.1',
+    title: 'Every line justifies its existence.',
+    body: `Software is not written for machines — it is written for the engineers who inherit it.
+A function that cannot be explained in one sentence is a function waiting to be rewritten.
+Complexity is not a sign of sophistication. It is a sign of unfinished thinking.
+The goal is not clever code. The goal is code that makes the next engineer say "of course."`,
+  },
+  {
+    id: 'PRECISION',
+    version: 'v1.0.2',
+    title: 'Zero tolerance for ambiguity at runtime.',
+    body: `Types are not bureaucracy. They are executable documentation.
+An untyped variable is a promise you cannot keep.
+The cost of a runtime error in production is paid in trust, not in compute cycles.
+Write tests not because you doubt your code, but because you respect your future self.`,
+  },
+  {
+    id: 'BRUTALISM',
+    version: 'v1.0.3',
+    title: 'Honesty in form. No decorative lies.',
+    body: `A rounded corner does not make an interface kinder. It makes it dishonest.
+UI should reveal its structure, not hide it.
+Performance is a design constraint, not an afterthought.
+A loading spinner is an admission of failure. Pre-render everything you can predict.`,
+  },
+  {
+    id: 'LEGACY',
+    version: 'v1.0.4',
+    title: 'Code outlives its author.',
+    body: `Every commit is a message to someone you will never meet.
+The best architecture decision is the one that constrains the fewest future options.
+Deprecate with grace. Delete with confidence. Migrate without apology.
+The measure of good software is not whether it works today — it is whether it can be changed tomorrow.`,
+  },
+];
+---
+
+<Layout
+  title="Manifesto: Engineering Philosophy — TERMINAL_PRIME"
+  description="A declaration of engineering principles: PURPOSE, PRECISION, BRUTALISM, LEGACY."
+>
+  <article class="manifesto container section--lg">
+
+    <!-- File header -->
+    <header class="manifesto__header gsap-reveal">
+      <div class="manifesto__file-meta">
+        <span class="manifesto__file-label">DOCUMENT</span>
+        <span class="manifesto__file-path">~/terminal/manifesto_v1.0.4.md</span>
+      </div>
+      <h1 class="manifesto__title">
+        ENGINEERING<br /><span class="manifesto__title-accent">PHILOSOPHY</span>
+      </h1>
+      <div class="manifesto__attrs">
+        <span>AUTHOR: TERMINAL_PRIME</span>
+        <span>MODIFIED: 2024_03_01</span>
+        <span>STATUS: ACTIVE</span>
+        <span>ENCRYPTION: AES-256</span>
+      </div>
+    </header>
+
+    <hr class="manifesto__divider" />
+
+    <!-- Principles -->
+    <div class="manifesto__principles">
+      {principles.map((p, i) => (
+        <section class="manifesto__section gsap-reveal" id={p.id.toLowerCase()}>
+          <div class="manifesto__section-header">
+            <span class="manifesto__section-num">0{i + 1}_</span>
+            <div>
+              <h2 class="manifesto__section-id">{p.id}</h2>
+              <p class="manifesto__section-version">{p.version}</p>
+            </div>
+          </div>
+          <div class="manifesto__section-content">
+            <p class="manifesto__section-axiom">{p.title}</p>
+            <div class="manifesto__section-body">
+              {p.body.trim().split('\n').map(line => (
+                <p>{line}</p>
+              ))}
+            </div>
+          </div>
+        </section>
+      ))}
+    </div>
+
+    <!-- Footer signature -->
+    <footer class="manifesto__footer gsap-reveal">
+      <div class="manifesto__sig">
+        <span class="manifesto__sig-text">// END_OF_DOCUMENT — SHA256: 4f2a8b...</span>
+        <span class="manifesto__sig-status">VERIFIED</span>
+      </div>
+    </footer>
+  </article>
+
+  <ScrollAnimations />
+</Layout>
+
+<style>
+  .manifesto {
+    padding-top: calc(3.5rem + var(--space-16));
+  }
+
+  .manifesto__header {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-6);
+    margin-bottom: var(--space-12);
+  }
+
+  .manifesto__file-meta {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+  }
+
+  .manifesto__file-label {
+    font-family: var(--font-mono);
+    font-size: var(--text-label-sm);
+    color: var(--color-primary);
+    letter-spacing: var(--tracking-wider);
+    border: 1px solid var(--color-primary);
+    padding: 1px var(--space-2);
+  }
+
+  .manifesto__file-path {
+    font-family: var(--font-mono);
+    font-size: var(--text-body-sm);
+    color: var(--color-muted);
+  }
+
+  .manifesto__title {
+    font-family: var(--font-display);
+    font-size: var(--text-display-lg);
+    font-weight: 700;
+    letter-spacing: var(--tracking-tight);
+    color: var(--color-on-bg);
+    line-height: 1;
+  }
+
+  .manifesto__title-accent {
+    color: var(--color-primary);
+  }
+
+  .manifesto__attrs {
+    display: flex;
+    gap: var(--space-6);
+    flex-wrap: wrap;
+  }
+
+  .manifesto__attrs span {
+    font-family: var(--font-mono);
+    font-size: var(--text-label-sm);
+    color: var(--color-muted);
+    letter-spacing: var(--tracking-wide);
+  }
+
+  .manifesto__divider {
+    margin-block: var(--space-12);
+  }
+
+  .manifesto__principles {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-16);
+  }
+
+  .manifesto__section {
+    display: grid;
+    grid-template-columns: 120px 1fr;
+    gap: var(--space-12);
+    align-items: start;
+  }
+
+  .manifesto__section-header {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-2);
+    position: sticky;
+    top: calc(3.5rem + var(--space-4));
+  }
+
+  .manifesto__section-num {
+    font-family: var(--font-mono);
+    font-size: var(--text-label-sm);
+    color: var(--color-primary);
+    letter-spacing: var(--tracking-wide);
+    margin-top: 4px;
+  }
+
+  .manifesto__section-id {
+    font-family: var(--font-display);
+    font-size: var(--text-display-sm);
+    font-weight: 700;
+    letter-spacing: var(--tracking-tight);
+    color: var(--color-on-bg);
+    line-height: 1;
+  }
+
+  .manifesto__section-version {
+    font-family: var(--font-mono);
+    font-size: var(--text-label-sm);
+    color: var(--color-muted);
+    margin-top: var(--space-1);
+  }
+
+  .manifesto__section-content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-6);
+  }
+
+  .manifesto__section-axiom {
+    font-family: var(--font-display);
+    font-size: var(--text-display-sm);
+    font-weight: 500;
+    letter-spacing: var(--tracking-tight);
+    color: var(--color-primary);
+    line-height: 1.3;
+  }
+
+  .manifesto__section-body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+  }
+
+  .manifesto__section-body p {
+    font-family: var(--font-mono);
+    font-size: var(--text-body-md);
+    color: var(--color-muted);
+    line-height: 1.7;
+  }
+
+  .manifesto__footer {
+    margin-top: var(--space-24);
+    padding-top: var(--space-6);
+    border-top: var(--border-thin);
+  }
+
+  .manifesto__sig {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .manifesto__sig-text {
+    font-family: var(--font-mono);
+    font-size: var(--text-label-sm);
+    color: var(--color-muted);
+    letter-spacing: var(--tracking-wide);
+  }
+
+  .manifesto__sig-status {
+    font-family: var(--font-mono);
+    font-size: var(--text-label-sm);
+    color: var(--color-primary);
+    letter-spacing: var(--tracking-wider);
+    border: 1px solid var(--color-primary);
+    padding: 1px var(--space-2);
+  }
+
+  @media (max-width: 768px) {
+    .manifesto__section {
+      grid-template-columns: 1fr;
+      gap: var(--space-4);
+    }
+
+    .manifesto__section-header {
+      position: static;
+    }
+  }
+</style>

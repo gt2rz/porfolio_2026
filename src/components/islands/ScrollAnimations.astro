@@ -1,0 +1,99 @@
+---
+// ScrollAnimations island — client:idle
+// Initializes GSAP ScrollTrigger for all .gsap-reveal elements on the page
+---
+
+<script>
+  import { gsap, ScrollTrigger } from '../../lib/gsap';
+
+  function initScrollAnimations() {
+    // Kill existing triggers to prevent duplication after View Transitions
+    ScrollTrigger.getAll().forEach(t => t.kill());
+
+    // Reveal elements — fade up
+    const revealEls = document.querySelectorAll('.gsap-reveal');
+    revealEls.forEach((el) => {
+      gsap.fromTo(
+        el,
+        { opacity: 0, y: 32 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.8,
+          ease: 'expo.out',
+          clearProps: 'transform',
+          scrollTrigger: {
+            trigger: el,
+            start: 'top 88%',
+            once: true,
+          },
+        }
+      );
+    });
+
+    // Reveal from left
+    const revealLeftEls = document.querySelectorAll('.gsap-reveal-left');
+    revealLeftEls.forEach((el) => {
+      gsap.fromTo(
+        el,
+        { opacity: 0, x: -32 },
+        {
+          opacity: 1,
+          x: 0,
+          duration: 0.8,
+          ease: 'expo.out',
+          clearProps: 'transform',
+          scrollTrigger: {
+            trigger: el,
+            start: 'top 88%',
+            once: true,
+          },
+        }
+      );
+    });
+
+    // Stagger children
+    const staggerContainers = document.querySelectorAll('.gsap-stagger');
+    staggerContainers.forEach((container) => {
+      const children = container.querySelectorAll(':scope > *');
+      gsap.fromTo(
+        children,
+        { opacity: 0, y: 24 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.7,
+          stagger: 0.08,
+          ease: 'expo.out',
+          clearProps: 'transform',
+          scrollTrigger: {
+            trigger: container,
+            start: 'top 88%',
+            once: true,
+          },
+        }
+      );
+    });
+
+    // Progress bars — animate width on scroll into view
+    const progressBars = document.querySelectorAll('.progress-bar__fill');
+    progressBars.forEach((bar) => {
+      const target = bar as HTMLElement;
+      const finalWidth = target.style.getPropertyValue('--fill-width');
+      target.style.setProperty('--fill-width', '0%');
+
+      ScrollTrigger.create({
+        trigger: target,
+        start: 'top 90%',
+        once: true,
+        onEnter: () => {
+          target.style.setProperty('--fill-width', finalWidth);
+        },
+      });
+    });
+
+    ScrollTrigger.refresh();
+  }
+
+  document.addEventListener('astro:page-load', initScrollAnimations);
+</script>

@@ -1,0 +1,199 @@
+---
+import Button from '../ui/Button.astro';
+import StatusDot from '../ui/StatusDot.astro';
+import TypewriterText from '../islands/TypewriterText.astro';
+import VantaBackground from '../islands/VantaBackground.astro';
+---
+
+<section class="hero" aria-label="Hero">
+  <!-- Vanta background only on home -->
+  <VantaBackground />
+
+  <div class="container hero__inner">
+    <div class="hero__meta gsap-reveal">
+      <StatusDot status="online" label="AVAILABLE_FOR_WORK" pulse />
+    </div>
+
+    <h1 class="hero__title gsap-reveal">
+      <span class="hero__title-name">NODE_MASTER</span>
+      <span class="hero__title-role">
+        <TypewriterText
+          texts={[
+            'Senior Frontend Architect',
+            'Performance Engineer',
+            'Systems Thinker',
+            'Open Source Contributor',
+          ]}
+          prefix="> "
+          loop={true}
+          speed={28}
+        />
+      </span>
+    </h1>
+
+    <p class="hero__description gsap-reveal">
+      Specializing in distributed systems, zero-compromise performance, and
+      developer experience at scale. Every millisecond counts.
+    </p>
+
+    <div class="hero__actions gsap-reveal">
+      <Button href="/#projects" variant="primary">INITIATE_SESSION</Button>
+      <Button href="/manifesto" variant="tertiary">VIEW_LOGS</Button>
+    </div>
+
+    <div class="hero__metrics gsap-reveal">
+      <div class="hero__metric">
+        <span class="hero__metric-value">3+</span>
+        <span class="hero__metric-label">YRS_EXPERIENCE</span>
+      </div>
+      <div class="hero__metric-divider" aria-hidden="true">|</div>
+      <div class="hero__metric">
+        <span class="hero__metric-value">12</span>
+        <span class="hero__metric-label">PROJECTS_SHIPPED</span>
+      </div>
+      <div class="hero__metric-divider" aria-hidden="true">|</div>
+      <div class="hero__metric">
+        <span class="hero__metric-value">99.97%</span>
+        <span class="hero__metric-label">AVG_UPTIME</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scroll indicator -->
+  <div class="hero__scroll" aria-hidden="true">
+    <span class="hero__scroll-text">SCROLL_DOWN</span>
+    <div class="hero__scroll-line"></div>
+  </div>
+</section>
+
+<style>
+  .hero {
+    position: relative;
+    min-height: 100svh;
+    display: flex;
+    align-items: center;
+    padding-top: 3.5rem; /* NavBar height */
+    overflow: hidden;
+  }
+
+  .hero__inner {
+    position: relative;
+    z-index: var(--z-above);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-6);
+    padding-block: var(--space-24);
+    max-width: 800px;
+  }
+
+  .hero__meta {
+    display: flex;
+    align-items: center;
+  }
+
+  .hero__title {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+  }
+
+  .hero__title-name {
+    font-family: var(--font-display);
+    font-size: var(--text-display-lg);
+    font-weight: 700;
+    letter-spacing: var(--tracking-tight);
+    color: var(--color-on-bg);
+    line-height: 1;
+  }
+
+  .hero__title-role {
+    font-family: var(--font-mono);
+    font-size: clamp(1rem, 3vw, 1.5rem);
+    color: var(--color-muted);
+    min-height: 1.5em;
+  }
+
+  .hero__description {
+    font-family: var(--font-mono);
+    font-size: var(--text-body-md);
+    color: var(--color-muted);
+    max-width: 55ch;
+    line-height: 1.7;
+  }
+
+  .hero__actions {
+    display: flex;
+    align-items: center;
+    gap: var(--space-6);
+    flex-wrap: wrap;
+  }
+
+  .hero__metrics {
+    display: flex;
+    align-items: center;
+    gap: var(--space-6);
+    flex-wrap: wrap;
+    padding-top: var(--space-4);
+    border-top: var(--border-thin);
+  }
+
+  .hero__metric {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+  }
+
+  .hero__metric-value {
+    font-family: var(--font-display);
+    font-size: var(--text-display-sm);
+    font-weight: 700;
+    letter-spacing: var(--tracking-tight);
+    color: var(--color-primary);
+  }
+
+  .hero__metric-label {
+    font-family: var(--font-mono);
+    font-size: var(--text-label-sm);
+    color: var(--color-muted);
+    letter-spacing: var(--tracking-wider);
+  }
+
+  .hero__metric-divider {
+    color: var(--color-outline-variant);
+    font-family: var(--font-mono);
+    align-self: center;
+  }
+
+  /* Scroll indicator */
+  .hero__scroll {
+    position: absolute;
+    bottom: var(--space-8);
+    left: var(--container-px);
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    z-index: var(--z-above);
+  }
+
+  .hero__scroll-text {
+    font-family: var(--font-mono);
+    font-size: var(--text-label-sm);
+    color: var(--color-muted);
+    letter-spacing: var(--tracking-wider);
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+  }
+
+  .hero__scroll-line {
+    width: 1px;
+    height: 60px;
+    background: linear-gradient(to bottom, var(--color-primary), transparent);
+    animation: fade-in-up 1.5s ease-in-out infinite alternate;
+  }
+
+  @media (max-width: 768px) {
+    .hero__metrics { gap: var(--space-4); }
+    .hero__metric-divider { display: none; }
+    .hero__scroll { display: none; }
+  }
+</style>

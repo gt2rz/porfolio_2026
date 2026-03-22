@@ -1,0 +1,121 @@
+---
+import Button from '../ui/Button.astro';
+---
+
+<section class="manifesto-teaser" aria-labelledby="manifesto-teaser-title">
+  <div class="container manifesto-teaser__inner">
+    <div class="manifesto-teaser__content gsap-reveal">
+      <span class="manifesto-teaser__label">CORE_PHILOSOPHY</span>
+      <blockquote class="manifesto-teaser__quote">
+        <p id="manifesto-teaser-title">
+          Code is not merely a tool for execution — it is a
+          <em class="manifesto-teaser__emphasis">philosophical blueprint</em>
+          for scalable realities.
+        </p>
+      </blockquote>
+      <Button href="/manifesto" variant="tertiary">READ_MANIFESTO</Button>
+    </div>
+
+    <div class="manifesto-teaser__principles gsap-stagger" aria-label="Core principles">
+      {[
+        { id: 'PURPOSE',   desc: 'Every line justifies its existence.' },
+        { id: 'PRECISION', desc: 'Zero tolerance for ambiguity at runtime.' },
+        { id: 'BRUTALISM', desc: 'Honesty in form. No decorative lies.' },
+        { id: 'LEGACY',    desc: 'Code outlives its author.' },
+      ].map(p => (
+        <div class="manifesto-teaser__principle">
+          <span class="manifesto-teaser__principle-id">{p.id}</span>
+          <span class="manifesto-teaser__principle-desc">{p.desc}</span>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .manifesto-teaser {
+    padding-block: var(--space-24);
+    border-top: var(--border-thin);
+  }
+
+  .manifesto-teaser__inner {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-16);
+    align-items: start;
+  }
+
+  .manifesto-teaser__content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-8);
+  }
+
+  .manifesto-teaser__label {
+    font-family: var(--font-mono);
+    font-size: var(--text-label-sm);
+    color: var(--color-primary);
+    letter-spacing: var(--tracking-wider);
+    text-transform: uppercase;
+  }
+
+  .manifesto-teaser__quote {
+    border-left: 2px solid var(--color-primary);
+    padding-left: var(--space-6);
+  }
+
+  .manifesto-teaser__quote p {
+    font-family: var(--font-display);
+    font-size: var(--text-display-sm);
+    font-weight: 500;
+    letter-spacing: var(--tracking-tight);
+    color: var(--color-on-bg);
+    line-height: 1.3;
+  }
+
+  .manifesto-teaser__emphasis {
+    color: var(--color-primary);
+    font-style: normal;
+  }
+
+  .manifesto-teaser__principles {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    background: var(--color-outline-variant);
+    border: 1px solid var(--color-outline-variant);
+  }
+
+  .manifesto-teaser__principle {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+    padding: var(--space-4) var(--space-6);
+    background: var(--color-surface-low);
+    transition: background var(--duration-fast);
+  }
+
+  .manifesto-teaser__principle:hover {
+    background: var(--color-surface-hi);
+  }
+
+  .manifesto-teaser__principle-id {
+    font-family: var(--font-mono);
+    font-size: var(--text-label-sm);
+    color: var(--color-primary);
+    letter-spacing: var(--tracking-wider);
+  }
+
+  .manifesto-teaser__principle-desc {
+    font-family: var(--font-mono);
+    font-size: var(--text-body-sm);
+    color: var(--color-muted);
+  }
+
+  @media (max-width: 900px) {
+    .manifesto-teaser__inner {
+      grid-template-columns: 1fr;
+      gap: var(--space-8);
+    }
+  }
+</style>

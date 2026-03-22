@@ -1,0 +1,284 @@
+---
+// ContactForm island — client:load
+// Formspree-powered contact form with terminal aesthetic
+// Replace FORMSPREE_ID with your actual Formspree form ID
+const FORMSPREE_ID = 'YOUR_FORMSPREE_ID';
+---
+
+<form
+  id="contact-form"
+  class="contact-form"
+  action={`https://formspree.io/f/${FORMSPREE_ID}`}
+  method="POST"
+  novalidate
+>
+  <div class="contact-form__field">
+    <label class="contact-form__label" for="cf-name">
+      <span class="contact-form__label-prefix" aria-hidden="true">01_</span>
+      COMMAND_NAME
+    </label>
+    <input
+      type="text"
+      id="cf-name"
+      name="name"
+      class="contact-form__input"
+      placeholder="Your name"
+      required
+      autocomplete="name"
+    />
+    <span class="contact-form__error" id="cf-name-error" role="alert"></span>
+  </div>
+
+  <div class="contact-form__field">
+    <label class="contact-form__label" for="cf-email">
+      <span class="contact-form__label-prefix" aria-hidden="true">02_</span>
+      RETURN_ADDRESS
+    </label>
+    <input
+      type="email"
+      id="cf-email"
+      name="email"
+      class="contact-form__input"
+      placeholder="your@email.com"
+      required
+      autocomplete="email"
+    />
+    <span class="contact-form__error" id="cf-email-error" role="alert"></span>
+  </div>
+
+  <div class="contact-form__field">
+    <label class="contact-form__label" for="cf-message">
+      <span class="contact-form__label-prefix" aria-hidden="true">03_</span>
+      ENCRYPTED_MESSAGE
+    </label>
+    <textarea
+      id="cf-message"
+      name="message"
+      class="contact-form__input contact-form__textarea"
+      placeholder="Describe your project or inquiry..."
+      rows="6"
+      required
+    ></textarea>
+    <span class="contact-form__error" id="cf-msg-error" role="alert"></span>
+  </div>
+
+  <div class="contact-form__footer">
+    <div class="contact-form__status-bar">
+      <span class="contact-form__status-item">
+        <span class="contact-form__status-dot contact-form__status-dot--online" aria-hidden="true"></span>
+        UPLINK_READY
+      </span>
+      <span class="contact-form__status-item">BUFFER_CLEAR</span>
+    </div>
+    <button type="submit" class="contact-form__submit btn btn--primary" id="cf-submit">
+      TRANSMIT
+    </button>
+  </div>
+
+  <!-- Success / Error messages -->
+  <div id="cf-success" class="contact-form__response contact-form__response--success" hidden>
+    <span aria-hidden="true">// </span>TRANSMISSION_RECEIVED — I'll respond within 24h.
+  </div>
+  <div id="cf-error" class="contact-form__response contact-form__response--error" hidden>
+    <span aria-hidden="true">// </span>TRANSMISSION_FAILED — Please try again or email directly.
+  </div>
+</form>
+
+<script>
+  function initContactForm() {
+    const form = document.getElementById('contact-form') as HTMLFormElement;
+    if (!form) return;
+
+    const submitBtn = document.getElementById('cf-submit') as HTMLButtonElement;
+    const successMsg = document.getElementById('cf-success') as HTMLElement;
+    const errorMsg = document.getElementById('cf-error') as HTMLElement;
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      if (!validateForm(form)) return;
+
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'TRANSMITTING...';
+
+      try {
+        const data = new FormData(form);
+        const res = await fetch(form.action, {
+          method: 'POST',
+          body: data,
+          headers: { Accept: 'application/json' },
+        });
+
+        if (res.ok) {
+          form.reset();
+          successMsg.hidden = false;
+          errorMsg.hidden = true;
+          submitBtn.textContent = 'TRANSMITTED';
+        } else {
+          throw new Error('Server error');
+        }
+      } catch {
+        errorMsg.hidden = false;
+        successMsg.hidden = true;
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'TRANSMIT';
+      }
+    });
+  }
+
+  function validateForm(form: HTMLFormElement): boolean {
+    let valid = true;
+
+    const name = form.querySelector('#cf-name') as HTMLInputElement;
+    const email = form.querySelector('#cf-email') as HTMLInputElement;
+    const message = form.querySelector('#cf-message') as HTMLTextAreaElement;
+
+    clearErrors(form);
+
+    if (!name.value.trim()) {
+      showError('cf-name-error', 'Name required');
+      valid = false;
+    }
+
+    if (!email.value.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value)) {
+      showError('cf-email-error', 'Valid email required');
+      valid = false;
+    }
+
+    if (!message.value.trim() || message.value.trim().length < 10) {
+      showError('cf-msg-error', 'Message must be at least 10 characters');
+      valid = false;
+    }
+
+    return valid;
+  }
+
+  function showError(id: string, msg: string) {
+    const el = document.getElementById(id);
+    if (el) { el.textContent = `// ERR: ${msg}`; }
+  }
+
+  function clearErrors(form: HTMLFormElement) {
+    form.querySelectorAll('.contact-form__error').forEach(el => { el.textContent = ''; });
+  }
+
+  document.addEventListener('astro:page-load', initContactForm);
+</script>
+
+<style>
+  .contact-form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-8);
+    max-width: 640px;
+  }
+
+  .contact-form__field {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+
+  .contact-form__label {
+    font-family: var(--font-mono);
+    font-size: var(--text-label-sm);
+    letter-spacing: var(--tracking-wider);
+    text-transform: uppercase;
+    color: var(--color-muted);
+  }
+
+  .contact-form__label-prefix {
+    color: var(--color-primary);
+  }
+
+  .contact-form__input {
+    width: 100%;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid var(--color-outline-variant);
+    padding: var(--space-3) 0;
+    font-family: var(--font-mono);
+    font-size: var(--text-body-md);
+    color: var(--color-on-bg);
+    outline: none;
+    transition: border-color var(--duration-fast), box-shadow var(--duration-fast);
+    resize: none;
+  }
+
+  .contact-form__input:focus {
+    border-bottom-color: var(--color-primary);
+    box-shadow: 0 2px 0 -1px color-mix(in srgb, var(--color-primary) 30%, transparent);
+  }
+
+  .contact-form__input::placeholder {
+    color: var(--color-outline-variant);
+  }
+
+  .contact-form__textarea {
+    line-height: 1.7;
+  }
+
+  .contact-form__error {
+    font-family: var(--font-mono);
+    font-size: var(--text-label-sm);
+    color: var(--color-error);
+    letter-spacing: var(--tracking-wide);
+    min-height: 1em;
+  }
+
+  .contact-form__footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: var(--space-4);
+  }
+
+  .contact-form__status-bar {
+    display: flex;
+    gap: var(--space-4);
+  }
+
+  .contact-form__status-item {
+    font-family: var(--font-mono);
+    font-size: var(--text-label-sm);
+    color: var(--color-muted);
+    letter-spacing: var(--tracking-wide);
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+  }
+
+  .contact-form__status-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+  }
+
+  .contact-form__status-dot--online {
+    background: var(--color-primary);
+    animation: pulse-dot 2s ease-in-out infinite;
+  }
+
+  .contact-form__submit {
+    padding: var(--space-3) var(--space-8);
+  }
+
+  .contact-form__response {
+    font-family: var(--font-mono);
+    font-size: var(--text-body-sm);
+    padding: var(--space-4);
+    border: var(--border-thin);
+  }
+
+  .contact-form__response--success {
+    color: var(--color-primary);
+    border-color: color-mix(in srgb, var(--color-primary) 40%, transparent);
+    background: color-mix(in srgb, var(--color-primary) 6%, transparent);
+  }
+
+  .contact-form__response--error {
+    color: var(--color-error);
+    border-color: color-mix(in srgb, var(--color-error) 40%, transparent);
+    background: color-mix(in srgb, var(--color-error) 6%, transparent);
+  }
+</style>

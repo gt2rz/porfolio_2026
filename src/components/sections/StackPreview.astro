@@ -1,0 +1,142 @@
+---
+import ProgressBar from '../ui/ProgressBar.astro';
+import Button from '../ui/Button.astro';
+
+const coreStack = [
+  { name: 'TypeScript', value: 95 },
+  { name: 'Astro',      value: 92 },
+  { name: 'React',      value: 88 },
+  { name: 'GSAP',       value: 82 },
+  { name: 'Rust',       value: 72 },
+  { name: 'Go',         value: 70 },
+];
+---
+
+<section class="stack-preview" aria-labelledby="stack-preview-title">
+  <div class="container">
+    <header class="stack-preview__header gsap-reveal">
+      <span class="stack-preview__label">SYSTEM_CORE</span>
+      <h2 id="stack-preview-title" class="stack-preview__title">Tech Stack</h2>
+    </header>
+
+    <div class="stack-preview__body">
+      <div class="stack-preview__bars gsap-reveal">
+        {coreStack.map(skill => (
+          <ProgressBar label={skill.name} value={skill.value} />
+        ))}
+      </div>
+
+      <div class="stack-preview__meta gsap-reveal-left">
+        <div class="stack-preview__meta-item">
+          <span class="stack-preview__meta-key">PRIMARY_ENGINE</span>
+          <span class="stack-preview__meta-value">Astro + TypeScript</span>
+        </div>
+        <div class="stack-preview__meta-item">
+          <span class="stack-preview__meta-key">RUNTIME</span>
+          <span class="stack-preview__meta-value">Node 22 / Bun</span>
+        </div>
+        <div class="stack-preview__meta-item">
+          <span class="stack-preview__meta-key">DEPLOY_TARGET</span>
+          <span class="stack-preview__meta-value">Vercel / Cloudflare</span>
+        </div>
+        <div class="stack-preview__meta-item">
+          <span class="stack-preview__meta-key">VERSION_CONTROL</span>
+          <span class="stack-preview__meta-value">Git / GitHub</span>
+        </div>
+        <Button href="/stack" variant="tertiary" class="stack-preview__cta">
+          FULL_STACK_MANIFEST
+        </Button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .stack-preview {
+    padding-block: var(--space-24);
+    border-top: var(--border-thin);
+  }
+
+  .stack-preview__header {
+    margin-bottom: var(--space-12);
+  }
+
+  .stack-preview__label {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: var(--text-label-sm);
+    color: var(--color-primary);
+    letter-spacing: var(--tracking-wider);
+    text-transform: uppercase;
+    margin-bottom: var(--space-2);
+  }
+
+  .stack-preview__title {
+    font-family: var(--font-display);
+    font-size: var(--text-display-md);
+    font-weight: 700;
+    letter-spacing: var(--tracking-tight);
+    color: var(--color-on-bg);
+    line-height: 1;
+  }
+
+  .stack-preview__body {
+    display: grid;
+    grid-template-columns: 1fr 300px;
+    gap: var(--space-16);
+    align-items: start;
+  }
+
+  .stack-preview__bars {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-6);
+  }
+
+  .stack-preview__meta {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    background: var(--color-surface-low);
+    border: var(--border-thin);
+    padding: var(--space-6);
+  }
+
+  .stack-preview__meta-item {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+    padding-bottom: var(--space-4);
+    border-bottom: var(--border-thin);
+  }
+
+  .stack-preview__meta-item:last-of-type {
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+
+  .stack-preview__meta-key {
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    color: var(--color-muted);
+    letter-spacing: var(--tracking-wider);
+    text-transform: uppercase;
+  }
+
+  .stack-preview__meta-value {
+    font-family: var(--font-mono);
+    font-size: var(--text-body-sm);
+    color: var(--color-on-bg);
+  }
+
+  .stack-preview__cta {
+    margin-top: var(--space-2);
+  }
+
+  @media (max-width: 900px) {
+    .stack-preview__body {
+      grid-template-columns: 1fr;
+      gap: var(--space-8);
+    }
+  }
+</style>
