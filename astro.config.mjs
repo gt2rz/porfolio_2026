@@ -5,7 +5,7 @@ import mdx from '@astrojs/mdx';
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://terminal-prime.dev', // Replace with your actual domain
+  site: 'https://portfolio.gt2rz.cloud',
   integrations: [
     mdx(),
     sitemap(),
