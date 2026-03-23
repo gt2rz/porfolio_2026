@@ -31,12 +31,36 @@ export function pad(n: number, digits = 2): string {
   return String(n).padStart(digits, '0');
 }
 
-/** Get current time as HH:MM:SS_GMT */
+/** Get current time with local timezone (e.g., DD:MM:YYYY:HH:MM:SS_America/Bogota) */
 export function getSystemTime(): string {
   const now = new Date();
-  return [
-    pad(now.getUTCHours()),
-    pad(now.getUTCMinutes()),
-    pad(now.getUTCSeconds()),
-  ].join(':') + '_GMT';
+  const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+  
+  // Usar Intl.DateTimeFormat para respetar el timezone local del usuario
+  const formatter = new Intl.DateTimeFormat('en-US', {
+    timeZone: tz,
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+    hour12: false,
+  });
+  
+  const parts = formatter.formatToParts(now);
+  const values = {
+    year: '',
+    month: '',
+    day: '',
+    hour: '',
+    minute: '',
+    second: '',
+  };
+  
+  parts.forEach(({ type, value }) => {
+    if (type in values) values[type as keyof typeof values] = value;
+  });
+  
+  return `${values.year}:${values.month}:${values.day}:${values.hour}:${values.minute}:${values.second}_${tz}`;
 }
