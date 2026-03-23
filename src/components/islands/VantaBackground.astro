@@ -6,9 +6,11 @@
 <div id="vanta-bg" aria-hidden="true"></div>
 
 <script>
-  import * as THREE from 'three';
+  import * as THREE from "three";
 
-  let vantaEffect: ReturnType<typeof import('vanta/dist/vanta.net.min').default> | null = null;
+  let vantaEffect: ReturnType<
+    typeof import("vanta/dist/vanta.net.min").default
+  > | null = null;
 
   async function initVanta() {
     // Destroy previous instance on View Transition
@@ -17,10 +19,10 @@
       vantaEffect = null;
     }
 
-    const el = document.getElementById('vanta-bg');
+    const el = document.getElementById("vanta-bg");
     if (!el) return;
 
-    const VANTA = await import('vanta/dist/vanta.net.min');
+    const VANTA = await import("vanta/dist/vanta.net.min");
 
     vantaEffect = VANTA.default({
       el,
@@ -29,10 +31,11 @@
       touchControls: true,
       gyroControls: true,
       // Cyber green palette
-      color: 0x00e639,    // líneas — Cyber Green
-      color2: 0x00ff66,   // nodos — verde más brillante
+      color: 0x00e639, // líneas — Cyber Green
+      color2: 0x00ff66, // nodos — verde más brillante
       backgroundColor: 0x050505,
-      points: 6,
+      backgroundAlpha: 0.2,
+      points: 10,
       maxDistance: 30,
       spacing: 18,
       // Performance
@@ -42,14 +45,14 @@
   }
 
   // Cleanup on View Transition out
-  document.addEventListener('astro:before-swap', () => {
+  document.addEventListener("astro:before-swap", () => {
     if (vantaEffect) {
       vantaEffect.destroy();
       vantaEffect = null;
     }
   });
 
-  document.addEventListener('astro:page-load', initVanta);
+  document.addEventListener("astro:page-load", initVanta);
 </script>
 
 <style>
@@ -57,7 +60,7 @@
     position: fixed;
     inset: 0;
     z-index: -1;
-    opacity: 0.2;  /* controla transparencia global de líneas y nodos */
+    opacity: 0.1;  /* controla transparencia global de líneas y nodos */
   }
 
   #vanta-bg canvas {
