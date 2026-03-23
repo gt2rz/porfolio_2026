@@ -1,19 +1,19 @@
 ---
-import { getSystemTime } from '../../lib/utils';
-const systemTime = getSystemTime();
+
 ---
 
 <footer class="footer" role="contentinfo">
   <div class="container footer__inner">
     <div class="footer__left">
       <span class="footer__brand">GT2RZ.DEV</span>
-      <span class="footer__copy">©{new Date().getFullYear()}_SYS_OP_v1.0.0</span>
+      <span class="footer__copy">©{new Date().getFullYear()}_SYS_OP_v1.0.0</span
+      >
     </div>
 
     <div class="footer__metrics">
       <div class="footer__metric">
         <span class="footer__metric-key">LOCAL_TIME</span>
-        <span class="footer__metric-value" id="footer-clock">{systemTime}</span>
+        <span class="footer__metric-value" id="footer-clock">--:--:--</span>
       </div>
       <div class="footer__metric">
         <span class="footer__metric-key">PROTOCOL</span>
@@ -33,16 +33,41 @@ const systemTime = getSystemTime();
 
 <script>
   function updateClock() {
-    const el = document.getElementById('footer-clock');
+    const el = document.getElementById("footer-clock");
     if (!el) return;
+
     const now = new Date();
-    const hh = String(now.getUTCHours()).padStart(2, '0');
-    const mm = String(now.getUTCMinutes()).padStart(2, '0');
-    const ss = String(now.getUTCSeconds()).padStart(2, '0');
-    el.textContent = `${hh}:${mm}:${ss}_GMT`;
+    const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+
+    const formatter = new Intl.DateTimeFormat("en-US", {
+      timeZone: tz,
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+      hour12: false,
+    });
+
+    const parts = formatter.formatToParts(now);
+    const values: Record<string, string> = {
+      year: "",
+      month: "",
+      day: "",
+      hour: "",
+      minute: "",
+      second: "",
+    };
+
+    parts.forEach(({ type, value }: { type: string; value: string }) => {
+      if (type in values) values[type] = value;
+    });
+
+    el.textContent = `${values.year}-${values.month}-${values.day}_${values.hour}:${values.minute}:${values.second}_${tz}`;
   }
 
-  document.addEventListener('astro:page-load', () => {
+  document.addEventListener("astro:page-load", () => {
     updateClock();
     setInterval(updateClock, 1000);
   });
@@ -129,8 +154,15 @@ const systemTime = getSystemTime();
   }
 
   @media (max-width: 768px) {
-    .footer__inner { flex-direction: column; align-items: flex-start; }
-    .footer__metric { align-items: flex-start; }
-    .footer__metrics { gap: var(--space-4); }
+    .footer__inner {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    .footer__metric {
+      align-items: flex-start;
+    }
+    .footer__metrics {
+      gap: var(--space-4);
+    }
   }
 </style>
