@@ -1,8 +1,12 @@
 ---
-import Button from '../ui/Button.astro';
-import StatusDot from '../ui/StatusDot.astro';
-import TypewriterText from '../islands/TypewriterText.astro';
-import VantaBackground from '../islands/VantaBackground.astro';
+import { getCollection } from "astro:content";
+import Button from "../ui/Button.astro";
+import StatusDot from "../ui/StatusDot.astro";
+import TypewriterText from "../islands/TypewriterText.astro";
+import VantaBackground from "../islands/VantaBackground.astro";
+
+const projects = await getCollection("projects");
+const projectCount = projects.length;
 ---
 
 <section class="hero" aria-label="Hero">
@@ -19,23 +23,21 @@ import VantaBackground from '../islands/VantaBackground.astro';
       <span class="hero__title-role">
         <TypewriterText
           texts={[
-            'Software Developer',
-            'Full Stack Engineer',
-            'Senior Frontend Architect',
-            'Performance Engineer',
-            'Systems Thinker',
-            'Open Source Contributor',
+            "Software Developer",
+            "Full Stack Engineer",
+            "Performance Engineer",
+            "Systems Thinker",
+            "Open Source Contributor",
           ]}
           prefix="> "
-          loop={true}
+          loop={true} 
           speed={28}
         />
       </span>
     </h1>
 
     <p class="hero__description gsap-reveal">
-      Specializing in distributed systems, zero-compromise performance, and
-      developer experience at scale. Every millisecond counts.
+      Specializing in software architecture, performance optimization, and distributed systems. I build scalable realities with code as my blueprint.
     </p>
 
     <div class="hero__actions gsap-reveal">
@@ -50,14 +52,14 @@ import VantaBackground from '../islands/VantaBackground.astro';
       </div>
       <div class="hero__metric-divider" aria-hidden="true">|</div>
       <div class="hero__metric">
-        <span class="hero__metric-value">12</span>
+        <span class="hero__metric-value">{projectCount}</span>
         <span class="hero__metric-label">PROJECTS_SHIPPED</span>
       </div>
-      <div class="hero__metric-divider" aria-hidden="true">|</div>
+      <!-- <div class="hero__metric-divider" aria-hidden="true">|</div>
       <div class="hero__metric">
         <span class="hero__metric-value">99.97%</span>
         <span class="hero__metric-label">AVG_UPTIME</span>
-      </div>
+      </div> -->
     </div>
   </div>
 
@@ -194,8 +196,14 @@ import VantaBackground from '../islands/VantaBackground.astro';
   }
 
   @media (max-width: 768px) {
-    .hero__metrics { gap: var(--space-4); }
-    .hero__metric-divider { display: none; }
-    .hero__scroll { display: none; }
+    .hero__metrics {
+      gap: var(--space-4);
+    }
+    .hero__metric-divider {
+      display: none;
+    }
+    .hero__scroll {
+      display: none;
+    }
   }
 </style>
