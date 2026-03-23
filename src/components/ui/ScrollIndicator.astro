@@ -1,0 +1,79 @@
+<div class="scroll-indicator" aria-hidden="true">
+  <span class="scroll-indicator__text">SCROLL_DOWN</span>
+  <div class="scroll-indicator__line"></div>
+</div>
+
+<style>
+  .scroll-indicator {
+    position: fixed;
+    bottom: var(--space-8);
+    left: var(--container-px);
+    display: flex;
+    align-items: center;
+    /* gap: var(--space-2); */
+    z-index: var(--z-above);
+    pointer-events: none;
+  }
+
+  .scroll-indicator__text {
+    font-family: var(--font-mono);
+    font-size: var(--text-label-sm);
+    color: var(--color-muted);
+    letter-spacing: var(--tracking-wider);
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+  }
+
+  .scroll-indicator__line {
+    width: 4px;
+    height: 90px;
+    background: linear-gradient(to bottom, var(--color-primary), transparent);
+    animation: fade-in-up 1.5s ease-in-out infinite alternate;
+  }
+
+  .scroll-indicator {
+    transition:
+      opacity var(--duration-base, 300ms) ease,
+      transform var(--duration-base, 300ms) ease;
+  }
+
+  .scroll-indicator--hidden {
+    opacity: 0;
+    transform: translateY(8px);
+    pointer-events: none;
+  }
+
+  @media (max-width: 768px) {
+    .scroll-indicator {
+      display: none;
+    }
+  }
+</style>
+
+<script>
+  function initScrollIndicator() {
+    const el = document.querySelector(".scroll-indicator");
+    if (!el) return;
+
+    const THRESHOLD = 30; // px antes del final para ocultar
+
+    function update() {
+      const distanceFromBottom =
+        document.documentElement.scrollHeight -
+        window.scrollY -
+        window.innerHeight;
+
+      if(!el) return;
+
+      el.classList.toggle(
+        "scroll-indicator--hidden",
+        distanceFromBottom <= THRESHOLD,
+      );
+    }
+
+    window.addEventListener("scroll", update, { passive: true });
+    update(); // estado inicial
+  }
+
+  document.addEventListener("astro:page-load", initScrollIndicator);
+</script>

@@ -1,8 +1,9 @@
 ---
-import { ClientRouter } from 'astro:transitions';
-import NavBar from '../components/ui/NavBar.astro';
-import Footer from '../components/ui/Footer.astro';
-import '../styles/global.css';
+import { ClientRouter } from "astro:transitions";
+import NavBar from "../components/ui/NavBar.astro";
+import Footer from "../components/ui/Footer.astro";
+import ScrollIndicator from "../components/ui/ScrollIndicator.astro";
+import "../styles/global.css";
 
 interface Props {
   title?: string;
@@ -12,13 +13,16 @@ interface Props {
 }
 
 const {
-  title = 'GT2RZ.DEV — Senior Software Developer Portfolio',
-  description = 'Portfolio of a senior software developer specializing in software architecture, performance optimization, and distributed systems.',
-  ogImage = '/og-image.png',
+  title = "GT2RZ.DEV — Senior Software Developer Portfolio",
+  description = "Portfolio of a senior software developer specializing in software architecture, performance optimization, and distributed systems.",
+  ogImage = "/og-image.png",
   noindex = false,
 } = Astro.props;
 
-const canonicalURL = new URL(Astro.url.pathname, Astro.site ?? 'https://localhost:4321');
+const canonicalURL = new URL(
+  Astro.url.pathname,
+  Astro.site ?? "https://localhost:4321",
+);
 ---
 
 <!doctype html>
@@ -68,18 +72,20 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site ?? 'https://localhos
       <slot />
     </main>
 
+    {Astro.url.pathname === "/" && <ScrollIndicator />}
+
     <Footer />
 
     <!-- Lenis smooth scroll + GSAP ScrollTrigger init -->
     <script>
-      import { initLenis } from '../lib/lenis';
+      import { initLenis } from "../lib/lenis";
 
       function init() {
         initLenis();
       }
 
       // Init on first load and after every View Transition navigation
-      document.addEventListener('astro:page-load', init);
+      document.addEventListener("astro:page-load", init);
     </script>
   </body>
 </html>

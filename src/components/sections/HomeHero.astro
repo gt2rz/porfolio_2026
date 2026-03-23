@@ -30,14 +30,15 @@ const projectCount = projects.length;
             "Open Source Contributor",
           ]}
           prefix="> "
-          loop={true} 
+          loop={true}
           speed={28}
         />
       </span>
     </h1>
 
     <p class="hero__description gsap-reveal">
-      Specializing in software architecture, performance optimization, and distributed systems. I build scalable realities with code as my blueprint.
+      Specializing in software architecture, performance optimization, and
+      distributed systems. I build scalable realities with code as my blueprint.
     </p>
 
     <div class="hero__actions gsap-reveal">
@@ -61,12 +62,6 @@ const projectCount = projects.length;
         <span class="hero__metric-label">AVG_UPTIME</span>
       </div> -->
     </div>
-  </div>
-
-  <!-- Scroll indicator -->
-  <div class="hero__scroll" aria-hidden="true">
-    <span class="hero__scroll-text">SCROLL_DOWN</span>
-    <div class="hero__scroll-line"></div>
   </div>
 </section>
 
@@ -168,41 +163,11 @@ const projectCount = projects.length;
     align-self: center;
   }
 
-  /* Scroll indicator */
-  .hero__scroll {
-    position: absolute;
-    bottom: var(--space-8);
-    left: var(--container-px);
-    display: flex;
-    align-items: center;
-    gap: var(--space-3);
-    z-index: var(--z-above);
-  }
-
-  .hero__scroll-text {
-    font-family: var(--font-mono);
-    font-size: var(--text-label-sm);
-    color: var(--color-muted);
-    letter-spacing: var(--tracking-wider);
-    writing-mode: vertical-rl;
-    transform: rotate(180deg);
-  }
-
-  .hero__scroll-line {
-    width: 1px;
-    height: 60px;
-    background: linear-gradient(to bottom, var(--color-primary), transparent);
-    animation: fade-in-up 1.5s ease-in-out infinite alternate;
-  }
-
   @media (max-width: 768px) {
     .hero__metrics {
       gap: var(--space-4);
     }
     .hero__metric-divider {
-      display: none;
-    }
-    .hero__scroll {
       display: none;
     }
   }
