@@ -1,9 +1,9 @@
 ---
 interface Props {
-  texts: string[];       // Array of strings to cycle through
-  prefix?: string;       // Static prefix shown before typed text
+  texts: string[];
+  prefix?: string;
   loop?: boolean;
-  speed?: number;        // Characters per second
+  speed?: number;
 }
 
 const {
@@ -16,15 +16,28 @@ const {
 
 <span class="typewriter-wrap" aria-label={texts.join(', ')}>
   {prefix && <span class="typewriter-prefix">{prefix}</span>}
-  <span id="typewriter-target" class="typewriter-text cursor-blink" aria-live="polite"></span>
+  <span
+    id="typewriter-target"
+    class="typewriter-text cursor-blink"
+    aria-live="polite"
+    data-texts={JSON.stringify(texts)}
+    data-loop={String(loop)}
+    data-speed={String(speed)}
+  ></span>
 </span>
 
-<script define:vars={{ texts, loop, speed }}>
+<script>
   import { gsap, TextPlugin } from '../../lib/gsap';
 
   function initTypewriter() {
     const el = document.getElementById('typewriter-target');
     if (!el) return;
+
+    const texts: string[] = JSON.parse(el.dataset.texts || '[]');
+    const loop = el.dataset.loop === 'true';
+    const speed = Number(el.dataset.speed || 30);
+
+    if (!texts.length) return;
 
     const duration = (text: string) => text.length / speed;
     let currentIndex = 0;
@@ -33,10 +46,13 @@ const {
     function typeNext() {
       if (killed) return;
       const text = texts[currentIndex];
-      const tl = gsap.timeline({
+
+      gsap.to(el, {
+        duration: duration(text),
+        text: { value: text, delimiter: '' },
+        ease: 'none',
         onComplete: () => {
           if (killed) return;
-          // Pause then delete
           gsap.delayedCall(2.5, () => {
             if (killed) return;
             gsap.to(el, {
@@ -54,17 +70,10 @@ const {
           });
         },
       });
-
-      tl.to(el, {
-        duration: duration(text),
-        text: { value: text, delimiter: '' },
-        ease: 'none',
-      });
     }
 
     typeNext();
 
-    // Cleanup on View Transition
     document.addEventListener('astro:before-swap', () => {
       killed = true;
       gsap.killTweensOf(el);
