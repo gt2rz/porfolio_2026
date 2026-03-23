@@ -1,39 +1,66 @@
 ---
 const navLinks = [
-  { label: 'PROJECTS', href: '/#projects' },
-  { label: 'STACK',    href: '/stack' },
-  { label: 'MANIFESTO', href: '/manifesto' },
-  { label: 'CONTACT',  href: '/contact' },
+  { label: "PROJECTS", href: "/#projects" },
+  // { label: "STACK", href: "/stack" },
+  // { label: "MANIFESTO", href: "/manifesto" },
+  { label: "CONTACT", href: "/contact" },
 ];
 
 const currentPath = Astro.url.pathname;
+
+function isActiveLink(currentPath: string, href: string) {
+  const normalizedHref = href.split("#")[0] || "/";
+
+  if (normalizedHref === "/") {
+    return currentPath === "/";
+  }
+
+  return (
+    currentPath === normalizedHref ||
+    currentPath.startsWith(normalizedHref + "/")
+  );
+}
 ---
 
 <header class="navbar" role="banner">
   <nav class="container navbar__inner" aria-label="Primary navigation">
     <a href="/" class="navbar__logo" aria-label="GT2RZ.DEV — Home">
-      <span class="navbar__logo-prefix" aria-hidden="true">~/</span>GT2RZ.DEV
+      <span class="navbar__logo-prefix" aria-hidden="true">~/</span>gt2rz<span
+        class="navbar__logo-prefix"
+        aria-hidden="true">></span
+      >
     </a>
 
     <ul class="navbar__links" role="list">
-      {navLinks.map((link) => (
-        <li>
-          <a
-            href={link.href}
-            class:list={[
-              'navbar__link',
-              { 'navbar__link--active': currentPath === link.href || (link.href !== '/' && currentPath.startsWith(link.href.replace('/#projects', ''))) }
-            ]}
-            aria-current={currentPath === link.href ? 'page' : undefined}
-          >
-            {link.label}
-          </a>
-        </li>
-      ))}
+      {
+        navLinks.map((link) => (
+          <li>
+            <a
+              href={link.href}
+              class:list={[
+                "navbar__link",
+                {
+                  "navbar__link--active": isActiveLink(currentPath, link.href),
+                },
+              ]}
+              aria-current={
+                isActiveLink(currentPath, link.href) ? "page" : undefined
+              }
+            >
+              {link.label}
+            </a>
+          </li>
+        ))
+      }
     </ul>
 
     <!-- Mobile menu button -->
-    <button class="navbar__menu-btn" id="menu-toggle" aria-label="Toggle menu" aria-expanded="false">
+    <button
+      class="navbar__menu-btn"
+      id="menu-toggle"
+      aria-label="Toggle menu"
+      aria-expanded="false"
+    >
       <span></span><span></span><span></span>
     </button>
   </nav>
@@ -42,40 +69,55 @@ const currentPath = Astro.url.pathname;
 <!-- Mobile drawer -->
 <div class="navbar__mobile-drawer" id="mobile-drawer" aria-hidden="true">
   <ul role="list">
-    {navLinks.map((link) => (
-      <li>
-        <a href={link.href} class="navbar__mobile-link">{link.label}</a>
-      </li>
-    ))}
+    {
+      navLinks.map((link) => (
+        <li>
+          <a
+            href={link.href}
+            class:list={[
+              "navbar__mobile-link",
+              {
+                "navbar__mobile-link--active": isActiveLink(
+                  currentPath,
+                  link.href,
+                ),
+              },
+            ]}
+          >
+            {link.label}
+          </a>
+        </li>
+      ))
+    }
   </ul>
 </div>
 
 <script>
   function initNav() {
-    const btn = document.getElementById('menu-toggle');
-    const drawer = document.getElementById('mobile-drawer');
+    const btn = document.getElementById("menu-toggle");
+    const drawer = document.getElementById("mobile-drawer");
     if (!btn || !drawer) return;
 
-    btn.addEventListener('click', () => {
-      const isOpen = btn.getAttribute('aria-expanded') === 'true';
-      btn.setAttribute('aria-expanded', String(!isOpen));
-      drawer.setAttribute('aria-hidden', String(isOpen));
-      drawer.classList.toggle('navbar__mobile-drawer--open', !isOpen);
-      document.body.style.overflow = !isOpen ? 'hidden' : '';
+    btn.addEventListener("click", () => {
+      const isOpen = btn.getAttribute("aria-expanded") === "true";
+      btn.setAttribute("aria-expanded", String(!isOpen));
+      drawer.setAttribute("aria-hidden", String(isOpen));
+      drawer.classList.toggle("navbar__mobile-drawer--open", !isOpen);
+      document.body.style.overflow = !isOpen ? "hidden" : "";
     });
 
     // Close on link click
-    drawer.querySelectorAll('a').forEach(a => {
-      a.addEventListener('click', () => {
-        btn.setAttribute('aria-expanded', 'false');
-        drawer.setAttribute('aria-hidden', 'true');
-        drawer.classList.remove('navbar__mobile-drawer--open');
-        document.body.style.overflow = '';
+    drawer.querySelectorAll("a").forEach((a) => {
+      a.addEventListener("click", () => {
+        btn.setAttribute("aria-expanded", "false");
+        drawer.setAttribute("aria-hidden", "true");
+        drawer.classList.remove("navbar__mobile-drawer--open");
+        document.body.style.overflow = "";
       });
     });
   }
 
-  document.addEventListener('astro:page-load', initNav);
+  document.addEventListener("astro:page-load", initNav);
 </script>
 
 <style>
@@ -133,7 +175,7 @@ const currentPath = Astro.url.pathname;
   }
 
   .navbar__link::after {
-    content: '';
+    content: "";
     position: absolute;
     bottom: -4px;
     left: 0;
@@ -212,9 +254,17 @@ const currentPath = Astro.url.pathname;
   }
 
   @media (max-width: 768px) {
-    .navbar__links { display: none; }
-    .navbar__menu-btn { display: flex; }
-    .navbar__mobile-drawer { display: block; }
-    .navbar__mobile-drawer--open { transform: translateX(0); }
+    .navbar__links {
+      display: none;
+    }
+    .navbar__menu-btn {
+      display: flex;
+    }
+    .navbar__mobile-drawer {
+      display: block;
+    }
+    .navbar__mobile-drawer--open {
+      transform: translateX(0);
+    }
   }
 </style>
